@@ -44,6 +44,7 @@ class Bird(pygame.sprite.Sprite):
 
 	def update(self):
 		if self.flying : 
+			self.handle_input()
 			self.vel += 0.5
 			if self.vel > 8:
 				self.vel = 8
@@ -51,8 +52,6 @@ class Bird(pygame.sprite.Sprite):
 				self.rect.y += int(self.vel)
 
 		if not self.failed:
-			#jump
-			self.handle_input()
 			self.animation()
 		else:
 			#point the bird at the ground
@@ -138,8 +137,9 @@ class Game():
 	def reset_game(self):
 		self.pipe_group.empty()
 		self.new_pipes(time=0)
-		self.flappy.rect.x = 100
-		self.flappy.rect.y = self.ground_y // 2
+		self.bird_group.empty()
+		self.flappy = Bird(100, self.ground_y // 2)
+		self.bird_group.add(self.flappy)
 		self.score = 0
 		self.observed = dict()
 		pygame.mixer.music.play(-1)
